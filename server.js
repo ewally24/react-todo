@@ -16,5 +16,5 @@ app.use(function(req, res, next) {
 app.use(express.static('./public'));
 
 app.listen(PORT, function() {
-	console.log('Express Server Running React Timer on Port ' + PORT);
+	console.log('Express Server Running React Todo on Port ' + PORT);
 });
