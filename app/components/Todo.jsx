@@ -4,12 +4,12 @@ var Todo = React.createClass({
 	render: function() {
 		var {id, text} = this.props;
 
-		return(
+		return (
 			<div>
-			{id}. {text}
+				{id}. {text}
 			</div>
 		)
 	}
-});
+})
 
 module.exports = Todo;

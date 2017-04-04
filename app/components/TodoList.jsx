@@ -4,8 +4,6 @@ var Todo = require('Todo');
 
 var TodoList = React.createClass({
 	render: function() {
-		var {todos} = this.props;
-
 		var RenderTodos = () => {
 			return todos.map((todo) => {
 				return (
@@ -14,12 +12,13 @@ var TodoList = React.createClass({
 			})
 		}
 
+		var {todos} = this.props;
 		return (
 			<div>
 				{RenderTodos()}
 			</div>
 		)
 	}
-})
+});
 
 module.exports = TodoList;
