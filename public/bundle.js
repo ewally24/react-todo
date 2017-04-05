@@ -25491,18 +25491,33 @@
 				searchText: '',
 				todos: [{
 					id: uuid(),
-					text: 'Walk the dog'
+					text: 'Walk the dog',
+					completed: false
 				}, {
 					id: uuid(),
-					text: 'Take out the garbage'
+					text: 'Take out the garbage',
+					completed: true
 				}, {
 					id: uuid(),
-					text: 'Reach Platinum in SF V'
+					text: 'Reach Platinum in SF V',
+					completed: true
 				}, {
 					id: uuid(),
-					text: 'Learn how to Rollerblade'
+					text: 'Learn how to Rollerblade',
+					completed: false
 				}]
 			};
+		},
+		handleToggle: function handleToggle(id) {
+			var updatedTodos = this.state.todos.map(function (todo) {
+				if (todo.id === id) {
+					todo.completed = !todo.completed;
+				}
+
+				return todo;
+			});
+
+			this.setState({ todos: updatedTodos });
 		},
 		handleSearch: function handleSearch(showCompleted, searchText) {
 			this.setState({
@@ -25514,7 +25529,8 @@
 			this.setState({
 				todos: [].concat(_toConsumableArray(this.state.todos), [{
 					id: uuid(),
-					text: task
+					text: task,
+					completed: false
 				}])
 			});
 		},
@@ -25526,7 +25542,7 @@
 				'div',
 				null,
 				React.createElement(TodoSearch, { onSearch: this.handleSearch }),
-				React.createElement(TodoList, { todos: todos }),
+				React.createElement(TodoList, { todos: todos, onToggle: this.handleToggle }),
 				React.createElement(AddTodo, { addTodo: this.handleAddTodo })
 			);
 		}
@@ -33900,9 +33916,11 @@
 		displayName: 'TodoList',
 
 		render: function render() {
+			var _this = this;
+
 			var RenderTodos = function RenderTodos() {
 				return todos.map(function (todo) {
-					return React.createElement(Todo, _extends({ key: todo.id }, todo));
+					return React.createElement(Todo, _extends({ key: todo.id }, todo, { onToggle: _this.props.onToggle }));
 				});
 			};
 
@@ -33930,16 +33948,20 @@
 		displayName: 'Todo',
 
 		render: function render() {
+			var _this = this;
+
 			var _props = this.props,
 			    id = _props.id,
-			    text = _props.text;
+			    text = _props.text,
+			    completed = _props.completed;
 
 
 			return React.createElement(
 				'div',
-				null,
-				id,
-				'. ',
+				{ onClick: function onClick() {
+						_this.props.onToggle(id);
+					} },
+				React.createElement('input', { type: 'checkbox', checked: completed }),
 				text
 			);
 		}
