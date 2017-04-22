@@ -13,6 +13,6 @@ var Todo = React.createClass({
 			</div>
 		)
 	}
-})
+});
 
 module.exports = Todo;

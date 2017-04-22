@@ -16,23 +16,13 @@ var TodoApp = React.createClass({
 			todos: [
 				{
 					id: uuid(),
-					text: 'Walk the dog',
+					text: 'Leave PLS Forever',
 					completed: false
 				},
 				{
 					id: uuid(),
-					text: 'Take out the garbage',
-					completed: true
-				},
-				{
-					id: uuid(),
-					text: 'Reach Platinum in SF V',
-					completed: true
-				},
-				{
-					id: uuid(),
-					text: 'Learn how to Rollerblade',
-					completed: false 
+					text: 'Learn self-control',
+					completed: false
 				}
 			]
 			*/
@@ -41,8 +31,20 @@ var TodoApp = React.createClass({
 	componentDidUpdate: function() {
 		TodoAPI.setTodos(this.state.todos);
 	},
+	handleAddTodo: function(task) {
+		this.setState({
+			todos: [
+				...this.state.todos, 
+				{
+					id: uuid(),
+					text: task,
+					completed: true
+				}
+			]
+		})
+	},
 	handleToggle: function(id) {
-		var updatedTodos = this.state.todos.map((todo) => {
+		var UpdatedTodos = this.state.todos.map((todo) => {
 			if(todo.id === id) {
 				todo.completed = !todo.completed;
 			}
@@ -50,37 +52,27 @@ var TodoApp = React.createClass({
 			return todo;
 		})
 
-		this.setState({todos: updatedTodos});
+		this.setState({todos: UpdatedTodos});
 	},
 	handleSearch: function(showCompleted, searchText) {
 		this.setState({
 			showCompleted: showCompleted,
-			searchText: searchText.ToLowerCase()
-		})
-	},
-	handleAddTodo: function(task) {
-		this.setState({
-			todos: [
-				...this.state.todos,
-				{
-					id: uuid(),
-					text: task,
-					completed: false
-				}
-			]
+			searchText: searchText.toLowerCase()
 		})
 	},
 	render: function() {
-		var {todos} = this.state;
+		var {todos, showCompleted, searchText} = this.state;
+
+		var filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
 
 		return (
 			<div>
 				<TodoSearch onSearch={this.handleSearch}/>
-				<TodoList todos={todos} onToggle={this.handleToggle}/>
+				<TodoList todos={filteredTodos} onToggle={this.handleToggle}/>
 				<AddTodo addTodo={this.handleAddTodo}/>
 			</div>
 		)
 	}
-})
+});
 
 module.exports = TodoApp;

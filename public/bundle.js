@@ -25496,8 +25496,17 @@
 		componentDidUpdate: function componentDidUpdate() {
 			TodoAPI.setTodos(this.state.todos);
 		},
+		handleAddTodo: function handleAddTodo(task) {
+			this.setState({
+				todos: [].concat(_toConsumableArray(this.state.todos), [{
+					id: uuid(),
+					text: task,
+					completed: true
+				}])
+			});
+		},
 		handleToggle: function handleToggle(id) {
-			var updatedTodos = this.state.todos.map(function (todo) {
+			var UpdatedTodos = this.state.todos.map(function (todo) {
 				if (todo.id === id) {
 					todo.completed = !todo.completed;
 				}
@@ -25505,32 +25514,28 @@
 				return todo;
 			});
 
-			this.setState({ todos: updatedTodos });
+			this.setState({ todos: UpdatedTodos });
 		},
 		handleSearch: function handleSearch(showCompleted, searchText) {
 			this.setState({
 				showCompleted: showCompleted,
-				searchText: searchText.ToLowerCase()
-			});
-		},
-		handleAddTodo: function handleAddTodo(task) {
-			this.setState({
-				todos: [].concat(_toConsumableArray(this.state.todos), [{
-					id: uuid(),
-					text: task,
-					completed: false
-				}])
+				searchText: searchText.toLowerCase()
 			});
 		},
 		render: function render() {
-			var todos = this.state.todos;
+			var _state = this.state,
+			    todos = _state.todos,
+			    showCompleted = _state.showCompleted,
+			    searchText = _state.searchText;
 
+
+			var filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
 
 			return React.createElement(
 				'div',
 				null,
 				React.createElement(TodoSearch, { onSearch: this.handleSearch }),
-				React.createElement(TodoList, { todos: todos, onToggle: this.handleToggle }),
+				React.createElement(TodoList, { todos: filteredTodos, onToggle: this.handleToggle }),
 				React.createElement(AddTodo, { addTodo: this.handleAddTodo })
 			);
 		}
@@ -33911,8 +33916,8 @@
 					return React.createElement(Todo, _extends({ key: todo.id }, todo, { onToggle: _this.props.onToggle }));
 				});
 			};
-
 			var todos = this.props.todos;
+
 
 			return React.createElement(
 				'div',
@@ -33986,11 +33991,11 @@
 				React.createElement(
 					'form',
 					{ ref: 'form', onSubmit: this.onFormSubmit },
-					React.createElement('input', { type: 'text', ref: 'task', placeholder: 'What do you want to get done?' }),
+					React.createElement('input', { type: 'text', ref: 'task', placeholder: 'What would you like todo today?' }),
 					React.createElement(
 						'button',
 						{ className: 'button expanded' },
-						' Add Task '
+						' Add Todo '
 					)
 				)
 			);
@@ -34023,7 +34028,7 @@
 				React.createElement(
 					'div',
 					null,
-					React.createElement('input', { type: 'search', ref: 'searchText', onChange: this.handleSearch, placeholder: 'search todos' })
+					React.createElement('input', { type: 'text', ref: 'searchText', onChange: this.handleSearch, placeholder: 'Search Todos' })
 				),
 				React.createElement(
 					'div',
@@ -34032,7 +34037,7 @@
 						'label',
 						null,
 						React.createElement('input', { type: 'checkbox', ref: 'showCompleted', onChange: this.handleSearch }),
-						'Show Completed Todos'
+						' Show Completed Todos.'
 					)
 				)
 			);
@@ -34065,6 +34070,34 @@
 			} catch (e) {}
 
 			return $.isArray(todos) ? todos : [];
+		},
+		filterTodos: function filterTodos(todos, showCompleted, searchText) {
+			var filteredTodos = todos;
+
+			var filteredTodos = filteredTodos.filter(function (todo) {
+				return !todo.completed || showCompleted;
+			});
+
+			// Sort Todos by search text.
+			var filteredTodos = filteredTodos.filter(function (todo) {
+				var todoText = todo.text.toLowerCase();
+
+				return searchText.length === 0 || todoText.indexOf(searchText) > -1;
+			});
+
+			// Sort Todos by non-completed first 
+
+			filteredTodos.sort(function (a, b) {
+				if (!a.completed && b.completed) {
+					return -1;
+				} else if (a.completed && !b.completed) {
+					return 1;
+				} else {
+					return 0;
+				}
+			});
+
+			return filteredTodos;
 		}
 	};
 
