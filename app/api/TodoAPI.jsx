@@ -3,42 +3,40 @@ var $ = require('jQuery');
 module.exports = {
 	setTodos: function(todos) {
 		if($.isArray(todos)) {
-			localStorage.setItem('todos', JSON.stringify(todos));
-			return todos;
+			localStorage.setItem('todos', JSON.stringify(todos))
 		}
+		return todos;
 	},
 	getTodos: function() {
 		var stringTodos = localStorage.getItem('todos');
 		var todos = [];
 
 		try {
-			var todos = JSON.parse(stringTodos);
+			todos = JSON.parse(stringTodos);
 		} catch(e) {
 
 		}
 
-		return $.isArray(todos) ? todos : []
+		return $.isArray(todos) ? todos : [];
 	},
 	filterTodos: function(todos, showCompleted, searchText) {
 		var filteredTodos = todos;
 
+		// filter by incomplete task or show all with showCompleted true
 		var filteredTodos = filteredTodos.filter((todo) => {
 			return !todo.completed || showCompleted;
 		})
 
-		// Sort Todos by search text.
 		var filteredTodos = filteredTodos.filter((todo) => {
 			var todoText = todo.text.toLowerCase();
 
 			return searchText.length === 0 || todoText.indexOf(searchText) > -1;
 		})
 
-		// Sort Todos by non-completed first 
-
 		filteredTodos.sort((a,b) => {
-			if(!a.completed && b.completed) {
+			if(a.completed && !b.completed) {
 				return -1;
-			} else if(a.completed && !b.completed) {
+			} else if(!a.completed && b.completed) {
 				return 1;
 			} else {
 				return 0;

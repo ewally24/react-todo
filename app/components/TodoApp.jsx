@@ -1,5 +1,6 @@
 var React = require('react');
 var uuid = require('node-uuid');
+var moment = require('moment');
 
 var TodoList = require('TodoList');
 var AddTodo = require('AddTodo');
@@ -9,50 +10,46 @@ var TodoAPI = require('TodoAPI');
 var TodoApp = React.createClass({
 	getInitialState: function() {
 		return {
-			showCompleted: false,
 			searchText: '',
+			showCompleted: false,
 			todos: TodoAPI.getTodos(),
 			/*
 			todos: [
 				{
 					id: uuid(),
-					text: 'Leave PLS Forever',
-					completed: false
+					text: 'Reach Supa Gold With Gief',
+					completed: true,
+				}, 
+				{
+					id: uuid(),
+					text: 'Master Ultimate Self Control',
+					completed: false,
 				},
 				{
 					id: uuid(),
-					text: 'Learn self-control',
+					text: 'Finish React For Realz',
 					completed: false
 				}
 			]
 			*/
 		}
 	},
-	componentDidUpdate: function() {
+	componentDidUpdate: function(prevProps, prevState) {
 		TodoAPI.setTodos(this.state.todos);
 	},
 	handleAddTodo: function(task) {
 		this.setState({
 			todos: [
-				...this.state.todos, 
+				...this.state.todos,
 				{
 					id: uuid(),
 					text: task,
-					completed: true
+					completed: false,
+					createdAt: moment().unix(),
+					completedAt: undefined
 				}
 			]
 		})
-	},
-	handleToggle: function(id) {
-		var UpdatedTodos = this.state.todos.map((todo) => {
-			if(todo.id === id) {
-				todo.completed = !todo.completed;
-			}
-
-			return todo;
-		})
-
-		this.setState({todos: UpdatedTodos});
 	},
 	handleSearch: function(showCompleted, searchText) {
 		this.setState({
@@ -60,9 +57,18 @@ var TodoApp = React.createClass({
 			searchText: searchText.toLowerCase()
 		})
 	},
+	handleToggle: function(id) {
+		var updatedTodos = this.state.todos.map((todo) => {
+			if(todo.id === id) {
+				todo.completed = !todo.completed;
+				todo.completedAt = todo.completed ? moment().unix() : undefined
+			}
+			return todo;
+		})
+		this.setState({todos: updatedTodos})
+	},
 	render: function() {
 		var {todos, showCompleted, searchText} = this.state;
-
 		var filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
 
 		return (
