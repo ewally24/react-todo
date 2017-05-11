@@ -17,23 +17,24 @@ module.exports = {
 
 		}
 
-		return $.isArray(todos) ? todos : [];
+		return $.isArray(todos) ? todos : []
 	},
 	filterTodos: function(todos, showCompleted, searchText) {
 		var filteredTodos = todos;
 
-		// filter by incomplete task or show all with showCompleted true
+		// Filter by incomplete todos or if showCompleted is checked
 		var filteredTodos = filteredTodos.filter((todo) => {
-			return !todo.completed || showCompleted;
+			return !todo.completed || showCompleted
 		})
 
+		// Filter by searchText
 		var filteredTodos = filteredTodos.filter((todo) => {
 			var todoText = todo.text.toLowerCase();
 
 			return searchText.length === 0 || todoText.indexOf(searchText) > -1;
 		})
 
-		filteredTodos.sort((a,b) => {
+		filteredTodos.sort((a, b) => {
 			if(a.completed && !b.completed) {
 				return -1;
 			} else if(!a.completed && b.completed) {

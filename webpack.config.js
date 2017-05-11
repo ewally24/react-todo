@@ -29,6 +29,7 @@ module.exports = {
 		],
 		alias: {
 			Main: 'app/components/Main.jsx',
+			Actions: 'app/actions/actions.jsx',
 			ApplicationStyles: 'app/styles/app.scss'
 		},
 		extensions: ['', '.js', '.jsx']

@@ -8,19 +8,19 @@ var TodoList = React.createClass({
 
 		var RenderTodos = () => {
 			if(todos.length === 0) {
-			return (
-				<p className='container_message'> Nothing To Do. Add Something! </p>
-			)
-		}
+				return (
+					<p className='container_message'>There are no todos, do something!</p>
+				)
+			}
 
 			return todos.map((todo) => {
 				return (
-					<Todo key={todo.id} {...todo} onToggle={this.props.onToggle}/>
+					<div>
+						<Todo key={todo.id} {...todo} onToggle={this.props.onToggle}/>
+					</div>
 				)
 			})
 		}
-
-		
 		return (
 			<div>
 				{RenderTodos()}
