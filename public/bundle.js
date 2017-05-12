@@ -25559,7 +25559,7 @@
 						{ className: 'page-title text-center' },
 						' Todo App '
 					),
-					React.createElement(TodoSearch, { search: this.handleSearch }),
+					React.createElement(TodoSearch, { onSearch: this.handleSearch }),
 					React.createElement(TodoList, { todos: filteredTodos, onToggle: this.handleToggle }),
 					React.createElement(AddTodo, { addTodo: this.handleAddTodo })
 				)
@@ -47194,7 +47194,7 @@
 			var showCompleted = this.refs.showCompleted.checked;
 			var searchText = this.refs.searchText.value;
 
-			this.props.search(showCompleted, searchText);
+			this.props.onSearch(showCompleted, searchText);
 		},
 		render: function render() {
 			return React.createElement(
