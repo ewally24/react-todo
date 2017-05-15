@@ -4,18 +4,20 @@ var {Router, Route, IndexRoute, hashHistory} = require('react-router');
 var {Provider} = require('react-redux');
 
 var TodoApp = require('TodoApp');
+var TodoAPI = require('TodoAPI');
 
 var actions = require('actions');
 var store = require('configureStore').configure();
 
 var unsubscribe = store.subscribe(() => {
 	var state = store.getState();
+
 	console.log('new state', state);
+	TodoAPI.setTodos(state.todos);
 });
 
-store.dispatch(actions.addTodo('Create Spotify App'));
-store.dispatch(actions.setSearchText('Learn'));
-store.dispatch(actions.toggleShowCompleted());
+var initialTodos = TodoAPI.getTodos();
+store.dispatch(actions.addTodos(initialTodos));
 
 //load foundation
 $(document).foundation();
