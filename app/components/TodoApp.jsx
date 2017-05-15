@@ -2,8 +2,10 @@ var React = require('react');
 var uuid = require('node-uuid');
 var moment = require('moment');
 
-var TodoList = require('TodoList');
-var AddTodo = require('AddTodo');
+// var TodoList = require('TodoList'); 
+import TodoList from 'TodoList';
+import AddTodo from 'AddTodo';
+//var AddTodo = require('AddTodo');
 var TodoSearch = require('TodoSearch');
 var TodoAPI = require('TodoAPI');
 
@@ -12,8 +14,7 @@ var TodoApp = React.createClass({
 		return {
 			showCompleted: false,
 			searchText: '',
-			todos: TodoAPI.getTodos()
-			/*
+			//todos: TodoAPI.getTodos()
 			todos: [
 				{
 					id: uuid(),
@@ -28,11 +29,10 @@ var TodoApp = React.createClass({
 					text: 'Finish React For Realz',
 				}
 			]
-			*/
 		}
 	},
 	componentDidUpdate: function(prevProps, prevState) {
-		TodoAPI.setTodos(this.state.todos);
+		//TodoAPI.setTodos(this.state.todos);
 	},
 	handleAddTodo: function(task) {
 		this.setState({
@@ -54,16 +54,6 @@ var TodoApp = React.createClass({
 			searchText: searchText.toLowerCase()
 		})
 	},
-	handleToggle: function(id) {
-		var UpdatedTodos = this.state.todos.map((todo) => {
-			if(todo.id === id) {
-				todo.completed = !todo.completed;
-				todo.completedAt = todo.completed ? moment().unix() : todo.createdAt;
-			}
-			return todo;
-		})
-		this.setState({todos: UpdatedTodos});
-	},
 	render: function() {
 		var {todos, showCompleted, searchText} = this.state;
 		var filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText)
@@ -74,7 +64,7 @@ var TodoApp = React.createClass({
 					<h1 className='page-title text-center'> Todo App </h1>
 
 					<TodoSearch onSearch={this.handleSearch}/>
-					<TodoList todos={filteredTodos} onToggle={this.handleToggle}/>
+					<TodoList/>
 					<AddTodo addTodo={this.handleAddTodo}/>
 				</div>
 			</div>
