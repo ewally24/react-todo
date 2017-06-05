@@ -28,6 +28,7 @@ module.exports = {
 			'./app/api'
 		],
 		alias: {
+			app: 'app',
 			Main: 'app/components/Main.jsx',
 			actions: 'app/actions/actions.jsx',
 			reducers: 'app/reducers/reducers.jsx',

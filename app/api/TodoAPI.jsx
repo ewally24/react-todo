@@ -3,8 +3,9 @@ var $ = require('jQuery');
 module.exports = {
 	setTodos: function(todos) {
 		if($.isArray(todos)) {
-			localStorage.setItem('todos', JSON.stringify(todos))
+			localStorage.setItem('todos', JSON.stringify(todos));
 		}
+
 		return todos;
 	},
 	getTodos: function() {
@@ -17,28 +18,28 @@ module.exports = {
 
 		}
 
-		return $.isArray(todos) ? todos : []
+		return $.isArray(todos) ? todos : [];
 	},
 	filterTodos: function(todos, showCompleted, searchText) {
 		var filteredTodos = todos;
 
-		// Filter by incomplete todos or if showCompleted is checked
+		// filtered Todos by completed todos or if show completed is checked
 		var filteredTodos = filteredTodos.filter((todo) => {
-			return !todo.completed || showCompleted
-		})
+			return !todo.completed || showCompleted;
+		});
 
-		// Filter by searchText
+		// filter by searchText
 		var filteredTodos = filteredTodos.filter((todo) => {
 			var todoText = todo.text.toLowerCase();
 
-			return searchText.length === 0 || todoText.indexOf(searchText) > -1;
-		})
+			return searchText.length == 0 || todoText.indexOf(searchText) > -1;
+		});
 
 		filteredTodos.sort((a, b) => {
 			if(a.completed && !b.completed) {
 				return -1;
 			} else if(!a.completed && b.completed) {
-				return 1;
+				return -1;
 			} else {
 				return 0;
 			}
