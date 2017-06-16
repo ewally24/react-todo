@@ -1,5 +1,6 @@
 var React = require('react');
 var {connect} = require('react-redux');
+
 var actions = require('actions');
 
 export var AddTodo = React.createClass({
@@ -12,8 +13,9 @@ export var AddTodo = React.createClass({
 		if(task.length > 0) {
 			this.refs.task.value = '';
 			// this.props.addTodo(task);
-			//dispatch(actions.addTodo(task));
+			// dispatch(actions.addTodo(task));
 			dispatch(actions.startAddTodo(task));
+
 		} else {
 			this.refs.task.focus();
 		}

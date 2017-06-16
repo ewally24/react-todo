@@ -13,7 +13,7 @@ module.exports = {
 		var todos = [];
 
 		try {
-			todos = JSON.parse(stringTodos);
+			todos = JSON.parse(stringTodos)
 		} catch(e) {
 
 		}
@@ -23,23 +23,22 @@ module.exports = {
 	filterTodos: function(todos, showCompleted, searchText) {
 		var filteredTodos = todos;
 
-		// filtered Todos by completed todos or if show completed is checked
+		// Filtered by showCompleted checked or by incomplete todos
 		var filteredTodos = filteredTodos.filter((todo) => {
-			return !todo.completed || showCompleted;
+			return showCompleted || !todo.completed
 		});
 
-		// filter by searchText
+		// Filter by searchText.
 		var filteredTodos = filteredTodos.filter((todo) => {
-			var todoText = todo.text.toLowerCase();
-
-			return searchText.length == 0 || todoText.indexOf(searchText) > -1;
+			var todoText = todo.text;
+			return searchText.length === 0 || todoText.indexOf(searchText) > -1;
 		});
 
 		filteredTodos.sort((a, b) => {
 			if(a.completed && !b.completed) {
 				return -1;
 			} else if(!a.completed && b.completed) {
-				return -1;
+				return 1;
 			} else {
 				return 0;
 			}

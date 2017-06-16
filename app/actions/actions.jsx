@@ -1,45 +1,35 @@
 var moment = require('moment');
-import firebase, {firebaseRef} from 'app/firebase/index'
+import firebase, {firebaseRef} from 'app/firebase/index';
 
-export var setSearchText = (searchText) => {
+export var toggleShowCompleted = (() => {
+	return {
+		type: 'TOGGLE_SHOW_COMPLETED',
+	}
+});
+
+export var setSearchText = ((searchText) => {
 	return {
 		type: 'SET_SEARCH_TEXT',
 		searchText: searchText
 	}
-}
+});
 
-export var toggleShowCompleted = () => {
-	return {
-		type: 'TOGGLE_SHOW_COMPLETED',
-	}
-}
-
-// changed to add data to the database
-/*
-export var addTodo = (text) => {
-	return {
-		type: 'ADD_TODO',
-		text: text 
-	}
-}
-*/
-
-export var addTodo = (todo) => {
+export var addTodo = ((todo) => {
 	return {
 		type: 'ADD_TODO',
 		todo: todo
 	}
-}
+});
 
-//asynchronous call using AddTodo has callback
 export var startAddTodo = (text) => {
-	return (dispatch, getStore) => {
+	return(dispatch, getState) => {
 		var todo = {
 			text: text,
 			completed: false,
 			createdAt: moment().unix(),
 			completedAt: null
 		}
+
 		var todoRef = firebaseRef.child('todos').push(todo);
 
 		return todoRef.then(() => {
@@ -47,22 +37,42 @@ export var startAddTodo = (text) => {
 				...todo,
 				id: todoRef.key
 			}))
-			console.log('Create Todo Successful');
+			console.log('Add Todo Successful')
 		}, () => {
-			console.log('Create Todo Failed');
-		}) 
+			console.log('Add Todo Failed');
+		})
 	}
 }
-export var addTodos = (todos) => {
+
+export var addTodos = ((todos) => {
 	return {
 		type: 'ADD_TODOS',
 		todos: todos
 	}
-}
+})
 
-export var toggleTodo = (id) =>  {
+export var updateTodo = ((id, updates) => {
 	return {
-		type: 'TOGGLE_TODO',
-		id: id 
+		type: 'UPDATE_TODO',
+		id: id,
+		updates: updates
+	}
+})
+
+export var startToggleTodo = (id, completed) => {
+	return (dispatch, getState) => {
+		var todoRef = firebaseRef.child(`todos/${id}`);
+
+		var updates = {
+			completed: completed,
+			completedAt: completed ? moment().unix() : null
+		}
+
+		return todoRef.update(updates).then(() => {
+			dispatch(updateTodo(id, updates));
+			console.log('Update Successful');
+		}, () => {
+			console.log('Update Failed');
+		})
 	}
 }
