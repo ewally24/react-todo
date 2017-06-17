@@ -20,13 +20,15 @@ require('style!css!sass!ApplicationStyles');
 
 var unsubscribe = store.subscribe(() => {
 	var state = store.getState();
-	TodoAPI.setTodos(state.todos);
+	// TodoAPI.setTodos(state.todos);
 
 	console.log('currentState', state);
 })
 
-var initialTodos = TodoAPI.getTodos();
-store.dispatch(actions.addTodos(initialTodos));
+// var initialTodos = TodoAPI.getTodos();
+// store.dispatch(actions.addTodos(initialTodos));
+store.dispatch(actions.startAddTodos());
+
 
 reactDOM.render(
 	<Provider store={store}>
