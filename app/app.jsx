@@ -1,16 +1,12 @@
 var React = require('react');
 var reactDOM = require('react-dom');
-var {Router, Route, IndexRoute, hashHistory} = require('react-router');
+var {hashHistory} = require('react-router');
 var {Provider} = require('react-redux');
 var store = require('configureStore').configure();
 var actions = require('actions');
 
-import TodoApp from 'TodoApp';
-import Login from 'Login';
-var Main = require('Main');
-var TodoAPI = require('TodoAPI');
-
-// import './../playground/firebase/index';
+import 'app/firebase/index';
+import Router from 'app/router/index';
 
 //load foundation
 $(document).foundation();
@@ -19,6 +15,15 @@ $(document).foundation();
 
 //load custom styles
 require('style!css!sass!ApplicationStyles');
+
+// If user is not logged in redirect to login screen
+firebase.auth().onAuthStateChanged((user) => {
+	if(user) {
+		hashHistory.push('/todos');
+	} else {
+		hashHistory.push('/');
+	}
+})
 
 var unsubscribe = store.subscribe(() => {
 	var state = store.getState();
@@ -34,12 +39,7 @@ store.dispatch(actions.startAddTodos());
 
 reactDOM.render(
 	<Provider store={store}>
-		<Router history={hashHistory}>
-			<Route path='/' component={Main}>
-				<IndexRoute component={Login}/>
-				<TodoApp path='todos' component={TodoApp}/>
-			</Route>
-		</Router>
+		{Router}
 	</Provider>,
 	document.getElementById('app')
 )

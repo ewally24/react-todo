@@ -109,22 +109,23 @@ export var startToggleTodo = (id, completed) => {
 	}
 }
 
-//asynchronous call to Login using Github account
+// asynchronous call to Login using Github account
 export var startLogin = () => {
 	return(dispatch, getState) => {
 		return firebase.auth().signInWithPopup(githubProvider).then((result) => {
-			console.log('Login Successful', result);
+			console.log('Login Successful!', result);
 		}, (error) => {
-			console.log('Login Failed', error)
+			console.log('Login Failed.', error);
 		})
 	}
 }
 
 export var startLogout = () => {
-	return(dispatch, getState) => {
+	return (dispatch, getState) => {
 		return firebase.auth().signOut().then(() => {
-			console.log('Log Out Successful');
+			console.log('Logout successful');
 		})
 	}
 }
+
 

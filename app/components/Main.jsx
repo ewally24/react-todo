@@ -1,6 +1,7 @@
-var React = require('react');
+import React from 'react';
+import * as Redux from 'react-redux';
 
-var Main = React.createClass({
+export var Main = React.createClass({
 	render: function() {
 		return(
 			<div>
@@ -14,4 +15,4 @@ var Main = React.createClass({
 	}
 })
 
-module.exports = Main;
+export default Redux.connect()(Main);

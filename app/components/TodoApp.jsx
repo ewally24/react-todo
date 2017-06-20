@@ -1,19 +1,16 @@
 import React from 'react';
 import * as Redux from 'react-redux';
+import * as actions from 'actions';
 
 import TodoList from 'TodoList';
 import AddTodo from 'AddTodo';
 import TodoSearch from 'TodoSearch';
-import TodoAPI from 'TodoAPI';
-import * as actions from 'actions';
 
 export var TodoApp = React.createClass({
-	onLogout: function(e) {
+	onLogout: function() {
 		var {dispatch} = this.props;
-		e.preventDefault();
 
 		dispatch(actions.startLogout());
-
 	},
 	render: function() {
 		return (
