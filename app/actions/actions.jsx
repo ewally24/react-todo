@@ -1,5 +1,5 @@
 var moment = require('moment');
-import firebase, {firebaseRef} from 'app/firebase/index'
+import firebase, {firebaseRef, githubProvider} from 'app/firebase/index'
 
 export var setSearchText = (searchText) => {
 	return {
@@ -105,6 +105,25 @@ export var startToggleTodo = (id, completed) => {
 			console.log('Update Successful');
 		}, () => {
 			console.log('Update Failed');
+		})
+	}
+}
+
+//asynchronous call to Login using Github account
+export var startLogin = () => {
+	return(dispatch, getState) => {
+		return firebase.auth().signInWithPopup(githubProvider).then((result) => {
+			console.log('Login Successful', result);
+		}, (error) => {
+			console.log('Login Failed', error)
+		})
+	}
+}
+
+export var startLogout = () => {
+	return(dispatch, getState) => {
+		return firebase.auth().signOut().then(() => {
+			console.log('Log Out Successful');
 		})
 	}
 }

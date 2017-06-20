@@ -5,7 +5,9 @@ var {Provider} = require('react-redux');
 var store = require('configureStore').configure();
 var actions = require('actions');
 
-var TodoApp = require('TodoApp');
+import TodoApp from 'TodoApp';
+import Login from 'Login';
+var Main = require('Main');
 var TodoAPI = require('TodoAPI');
 
 // import './../playground/firebase/index';
@@ -32,7 +34,12 @@ store.dispatch(actions.startAddTodos());
 
 reactDOM.render(
 	<Provider store={store}>
-		<TodoApp/>
+		<Router history={hashHistory}>
+			<Route path='/' component={Main}>
+				<IndexRoute component={Login}/>
+				<TodoApp path='todos' component={TodoApp}/>
+			</Route>
+		</Router>
 	</Provider>,
 	document.getElementById('app')
 )
