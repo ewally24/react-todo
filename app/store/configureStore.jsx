@@ -1,9 +1,10 @@
 var redux = require('redux');
 var thunk = require('redux-thunk').default;
-var {showCompletedReducer, searchTextReducer, todosReducer} = require('reducers');
+var {authReducer, showCompletedReducer, searchTextReducer, todosReducer} = require('reducers');
 
 export var configure = (initialState = {}) => {
 	var reducers = redux.combineReducers({
+		auth: authReducer,
 		showCompleted: showCompletedReducer,
 		searchText: searchTextReducer,
 		todos: todosReducer

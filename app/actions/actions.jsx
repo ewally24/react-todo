@@ -128,4 +128,18 @@ export var startLogout = () => {
 	}
 }
 
+// auth actions for fetching uid
+export var login = (uid) => {
+	return {
+		type: 'LOGIN',
+		uid: uid
+	}
+}
+
+export var logout = () => {
+	return {
+		type: 'LOGOUT',
+	}
+}
+
 

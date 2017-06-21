@@ -19,8 +19,10 @@ require('style!css!sass!ApplicationStyles');
 // If user is not logged in redirect to login screen
 firebase.auth().onAuthStateChanged((user) => {
 	if(user) {
+		dispatch(actions.login(user.uid));
 		hashHistory.push('/todos');
 	} else {
+		dispatch(actions.logout());
 		hashHistory.push('/');
 	}
 })
