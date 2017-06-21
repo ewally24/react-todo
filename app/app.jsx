@@ -19,10 +19,11 @@ require('style!css!sass!ApplicationStyles');
 // If user is not logged in redirect to login screen
 firebase.auth().onAuthStateChanged((user) => {
 	if(user) {
-		dispatch(actions.login(user.uid));
+		store.dispatch(actions.login(user.uid));
+		store.dispatch(actions.startAddTodos());
 		hashHistory.push('/todos');
 	} else {
-		dispatch(actions.logout());
+		store.dispatch(actions.logout());
 		hashHistory.push('/');
 	}
 })
@@ -36,8 +37,6 @@ var unsubscribe = store.subscribe(() => {
 
 // var initialTodos = TodoAPI.getTodos();
 // store.dispatch(actions.addTodos(initialTodos));
-store.dispatch(actions.startAddTodos());
-
 
 reactDOM.render(
 	<Provider store={store}>

@@ -41,7 +41,8 @@ export var startAddTodo = (text) => {
 			completedAt: null
 		}
 
-		var todoRef = firebaseRef.child('todos').push(todo);
+		var uid = getState().auth.uid;
+		var todoRef = firebaseRef.child(`users/${uid}/todos`).push(todo);
 
 		return todoRef.then(() => {
 			dispatch(addTodo({
@@ -65,7 +66,8 @@ export var addTodos = (todos) => {
 //asynchronous call using addTodos has callback to fetch todos from firebase and populate redux store.
 export var startAddTodos = () => {
 	return (dispatch, getState) => {
-		var todosRef = firebaseRef.child('todos');
+		var uid = getState().auth.uid;
+		var todosRef = firebaseRef.child(`users/${uid}/todos`);
 
 		return todosRef.once('value').then((snapshot) => {
 			var todos = snapshot.val();
@@ -93,7 +95,8 @@ export var updateTodo = (id, updates) =>  {
 //asynchronous call using updateTodo has callback to update completed property of todo
 export var startToggleTodo = (id, completed) => {
 	return (dispatch, getState) => {
-		var todoRef = firebaseRef.child(`todos/${id}`);
+		var uid = getState().auth.uid;
+		var todoRef = firebaseRef.child(`users/${uid}/todos/${id}`);
 
 		var updates = {
 			completed: completed,
