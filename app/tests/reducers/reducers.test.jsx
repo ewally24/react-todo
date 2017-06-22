@@ -62,6 +62,24 @@ describe('Reducers', () => {
 
 		})
 
+		it('clear array of todos', () => {
+			var todos = [{
+			id: '111',
+			text: 'anything',
+			completed: false,
+			completedAt: undefined,
+			createdAt: 33000
+		}]
+
+		var action = {
+			type: 'CLEAR_TODOS',
+		}
+
+		var res = reducers.todosReducer(df(todos), df(action))
+
+		expect(res.length).toEqual(0);
+		})
+
 		it('should update todo', () => {
 			var todos = [{
 				id: 123,
