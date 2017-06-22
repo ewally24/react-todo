@@ -100,7 +100,7 @@ describe('Reducers', () => {
 			const res = reducers.authReducer(undefined, df(action));
 
 			expect(res).toEqual({
-				uid: action.id
+				uid: action.uid
 			})
 		})
 

@@ -31,9 +31,44 @@ export var addTodo = (todo) => {
 	}
 }
 
+export var updateTodo = (id, updates) => {
+	return {
+		type: 'UPDATE_TODO',
+		id: id,
+		updates: updates
+	}
+}
+
+export var clearTodos = () => {
+	return {
+		type: 'CLEAR_TODOS'
+	}
+}
+
+//asynchronous call using updateTodo as callback
+export var startToggleTodo = (id, completed) => {
+	return (dispatch, getState) => {
+		var uid = getState().auth.uid;
+		var todoRef = firebaseRef.child(`users/${uid}/todos/${id}`);
+
+		var updates = {
+			completed: completed,
+			completedAt: completed ? moment().unix() : null
+		}
+
+		return todoRef.update(updates).then(() => {
+			dispatch(updateTodo(id, updates))
+			console.log('Update Successful');
+		}, () => {
+			console.log('Update Failed');
+		})
+	}
+}
+
 //asynchronous call using AddTodo has callback
 export var startAddTodo = (text) => {
 	return(dispatch, getState) => {
+
 		var todo = {
 			text: text,
 			completed: false,
@@ -49,9 +84,6 @@ export var startAddTodo = (text) => {
 				id: todoRef.key,
 				...todo
 			}))
-			console.log('Add Todo Successful');
-		}, () => {
-			console.log('Add Todo Failed');
 		})
 	}
 }
@@ -65,7 +97,7 @@ export var addTodos = (todos) => {
 
 //asynchronous call using addTodos has callback to fetch todos from firebase and populate redux store.
 export var startAddTodos = () => {
-	return (dispatch, getState) => {
+	return(dispatch, getState) => {
 		var uid = getState().auth.uid;
 		var todosRef = firebaseRef.child(`users/${uid}/todos`);
 
@@ -84,54 +116,16 @@ export var startAddTodos = () => {
 	}
 }
 
-export var updateTodo = (id, updates) =>  {
-	return {
-		type: 'UPDATE_TODO',
-		id: id,
-		updates: updates
-	}
-}
-
-//asynchronous call using updateTodo has callback to update completed property of todo
-export var startToggleTodo = (id, completed) => {
-	return (dispatch, getState) => {
-		var uid = getState().auth.uid;
-		var todoRef = firebaseRef.child(`users/${uid}/todos/${id}`);
-
-		var updates = {
-			completed: completed,
-			completedAt: completed ? moment().unix() : null
-		}
-
-		return todoRef.update(updates).then(() => {
-			dispatch(updateTodo(id, updates));
-			console.log('Update Successful');
-		}, () => {
-			console.log('Update Failed');
-		})
-	}
-}
-
-// asynchronous call to Login using Github account
 export var startLogin = () => {
 	return(dispatch, getState) => {
-		return firebase.auth().signInWithPopup(githubProvider).then((result) => {
-			console.log('Login Successful!', result);
-		}, (error) => {
-			console.log('Login Failed.', error);
+		firebase.auth().signInWithPopup(githubProvider).then((result) => {
+			console.log('Login successful!');
+		}, () => {
+			console.log('login failed');
 		})
 	}
 }
 
-export var startLogout = () => {
-	return (dispatch, getState) => {
-		return firebase.auth().signOut().then(() => {
-			console.log('Logout successful');
-		})
-	}
-}
-
-// auth actions for fetching uid
 export var login = (uid) => {
 	return {
 		type: 'LOGIN',
@@ -139,9 +133,17 @@ export var login = (uid) => {
 	}
 }
 
+export var startLogout = () => {
+	return(dispatch, getState) => {
+		firebase.auth().signOut().then(() => {
+			console.log('Logout successful!');
+		})
+	}
+}
+
 export var logout = () => {
 	return {
-		type: 'LOGOUT',
+		type: 'LOGOUT'
 	}
 }
 

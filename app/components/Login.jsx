@@ -4,9 +4,8 @@ import * as Redux from 'react-redux';
 import * as actions from 'actions';
 
 export var Login = React.createClass({
-	onLogin: function(e) {
+	onLogin: function() {
 		var {dispatch} = this.props;
-		e.preventDefault();
 
 		dispatch(actions.startLogin());
 	},

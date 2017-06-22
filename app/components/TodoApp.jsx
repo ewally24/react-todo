@@ -11,6 +11,7 @@ export var TodoApp = React.createClass({
 		var {dispatch} = this.props;
 
 		dispatch(actions.startLogout());
+		dispatch(actions.clearTodos());
 	},
 	render: function() {
 		return (
@@ -35,3 +36,4 @@ export var TodoApp = React.createClass({
 });
 
 export default Redux.connect()(TodoApp);
+

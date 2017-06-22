@@ -23,8 +23,8 @@ export var todosReducer = (state = [], action) => {
 	switch(action.type) {
 		case 'ADD_TODO':
 			return [
-				...state,
-				action.todo
+					...state,
+					action.todo
 				/* changed to be added in actions startAddTodo generator
 				{
 					id: uuid(),
@@ -51,6 +51,8 @@ export var todosReducer = (state = [], action) => {
 					return todo;
 				}
 			})
+		case 'CLEAR_TODOS':
+			return [];
 		default:
 			return state
 	}
@@ -61,7 +63,7 @@ export var authReducer = (state = {}, action) => {
 		case 'LOGIN':
 			return {
 				uid: action.uid
-			}
+			};
 		case 'LOGOUT':
 			return {};
 		default:
