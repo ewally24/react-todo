@@ -1,4 +1,4 @@
-import moment from 'moment';
+var moment = require('moment');
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index'
 
 export var setSearchText = (searchText) => {

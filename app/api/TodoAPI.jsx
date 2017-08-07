@@ -33,7 +33,7 @@ module.exports = {
 		// Filter by searchText.
 		var filteredTodos = filteredTodos.filter((todo) => {
 			var todoText = todo.text;
-			return searchText.length === 0 || todoText.indexOf(searchText.toLowerCase()) > -1;
+			return searchText.length === 0 || todoText.indexOf(searchText) > -1;
 		});
 
 		filteredTodos.sort((a, b) => {
