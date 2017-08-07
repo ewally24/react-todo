@@ -3,13 +3,13 @@ var {Link, IndexLink} = require('react-router');
 import * as Redux from 'react-redux';
 import * as actions from 'actions';
 
-export var Login = React.createClass({
-	onLogin: function() {
-		var {dispatch} = this.props;
+export class Login extends React.Component {
+	onLogin() {
+		var dispatch = this.props.dispatch;
 
 		dispatch(actions.startLogin());
-	},
-	render: function() {
+	}
+	render() {
 		return (
 			<div>
 				<h1 className='page-title'> Todo App </h1>
@@ -20,13 +20,13 @@ export var Login = React.createClass({
 							<h3 className=''> Login </h3>
 							<p> Login with Github account below </p>
 
-							<button onClick={this.onLogin} className='button'> Login with Github </button>
+							<button onClick={this.onLogin.bind(this)} className='button'> Login with Github </button>
 						</div>
 					</div>
 				</div>
 			</div>
 		)
 	}
-});
+}
 
 export default Redux.connect()(Login);

@@ -6,34 +6,34 @@ import TodoList from 'TodoList';
 import AddTodo from 'AddTodo';
 import TodoSearch from 'TodoSearch';
 
-export var TodoApp = React.createClass({
-	onLogout: function() {
-		var {dispatch} = this.props;
 
-		dispatch(actions.startLogout());
-		dispatch(actions.clearTodos());
-	},
-	render: function() {
-		return (
-			<div>
-				<div className='page-actions'>
-					<a href='#' onClick={this.onLogout}>Logout</a>
-				</div>
-			
-				<div className='row'>
-					<div className='column small-centered small-11 medium-6 large-5'>
-						<h1 className='page-title'> Todo App </h1>
+export class TodoApp extends React.Component {
+		onLogout() {
+			var {dispatch} = this.props;
 
-						<TodoSearch/>
-						<TodoList/>
-						<AddTodo/>
+			dispatch(actions.startLogout());
+			dispatch(actions.clearTodos());
+		}
+		render() {
+			return (
+				<div>
+					<div className='page-actions'>
+						<a href='#' onClick={this.onLogout.bind(this)}>Logout</a>
+					</div>
+				
+					<div className='row'>
+						<div className='column small-centered small-11 medium-6 large-5'>
+							<h1 className='page-title'> Todo App </h1>
 
+							<TodoSearch/>
+							<TodoList/>
+							<AddTodo/>
+
+						</div>
 					</div>
 				</div>
-			</div>
-		)
+			)
+		}
 	}
-});
 
 export default Redux.connect()(TodoApp);
-
