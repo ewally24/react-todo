@@ -1,5 +1,5 @@
-
 import React from 'react';
+import * as Redux from 'react-redux';
 
 export class Main extends React.Component {
 	render() {
@@ -15,4 +15,4 @@ export class Main extends React.Component {
 	}
 }
 
-export default Main;
+export default Redux.connect()(Main);
