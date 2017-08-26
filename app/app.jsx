@@ -1,52 +1,58 @@
-var React = require('react');
-var reactDOM = require('react-dom');
-var {Router, Route, IndexRoute, hashHistory} = require('react-router');
-var {Provider} = require('react-redux');
-var store = require('configureStore').configure();
-import * as actions from 'actions';
+import React from 'react';
+import reactDOM from 'react-dom';
+import {Provider} from 'react-redux';
+import {Router, Route, IndexRoute, hashHistory} from 'react-router';
 import firebase from 'firebase';
 
-import TodoApp from 'TodoApp';
-import Login from 'Login';
-import Main from 'Main';
+const store = require('configureStore').configure();
+import * as actions from 'actions';
 
-// import './../playground/firebase/index';
+import Main from 'Main';
+import Login from 'Login';
+import TodoApp from 'TodoApp';
+import * as TodoAPI from 'TodoAPI';
+
 
 //load foundation
 $(document).foundation();
 
-//require('style!css!foundation-sites/dist/foundation.min.css');
-
-//load custom styles
+// load custom styles
 require('style!css!sass!ApplicationStyles');
 
 var unsubscribe = store.subscribe(() => {
 	var state = store.getState();
-	// TodoAPI.setTodos(state.todos);
 
 	console.log('currentState', state);
 })
 
-// var initialTodos = TodoAPI.getTodos();
+//var initialTodos = TodoAPI.getTodos();
+//console.log(initialTodos, 'Current Todos State:');
 // store.dispatch(actions.addTodos(initialTodos));
 
+// Authentication Section 
 
+// redirect if user is not logged in.
+// the user object holds the uid that is passed from firebase when the user authenticats through github. user.uid
 firebase.auth().onAuthStateChanged((user) => {
 	if(user) {
+		// if authentication is successful adds user.uid from github authentication to the redux store auth object.
+		// retrieves that users todos.
+		console.log('successful authentication uid:', user.uid);
 		store.dispatch(actions.login(user.uid));
 		store.dispatch(actions.startAddTodos());
 		hashHistory.push('todos');
 	} else {
-		store.dispatch(actions.logout());
+		console.log('logout failed.');
+		store.dispatch(actions.logout()); // will set the redux store auth object to empty and redirect the user to login page.
 		hashHistory.push('/');
 	}
-});
+})
 
 var requireLogin = (nextState, replace, next) => {
 	if(!firebase.auth().currentUser) {
 		replace('/');
 	}
-	next();
+	next(); 
 }
 
 var redirectIfLoggedIn = (nextState, replace, next) => {
@@ -56,14 +62,16 @@ var redirectIfLoggedIn = (nextState, replace, next) => {
 	next();
 }
 
+
 reactDOM.render(
 	<Provider store={store}>
-		<Router history={hashHistory}>
-			<Route path='/' component={Main}>
-				<IndexRoute component={Login} onEnter={redirectIfLoggedIn}/>
-				<TodoApp path='todos' component={TodoApp} onEnter={requireLogin}/>
-			</Route>
-		</Router>
+	<Router history={hashHistory}>
+		<Route path='/' component={Main}>
+			<IndexRoute component={Login} onEnter={redirectIfLoggedIn}/>
+			<Route path='todos' component={TodoApp} onEnter={requireLogin}/>
+		</Route>
+	</Router>
 	</Provider>,
 	document.getElementById('app')
 )
+

@@ -1,5 +1,5 @@
-var moment = require('moment');
-var uuid = require('node-uuid');
+import uuid from 'node-uuid';
+import moment from 'moment';
 
 export var searchTextReducer = (state = '', action) => {
 	switch(action.type) {
@@ -23,26 +23,28 @@ export var todosReducer = (state = [], action) => {
 	switch(action.type) {
 		case 'ADD_TODO':
 			return [
-					...state,
-					action.todo
-				/* changed to be added in actions startAddTodo generator
-				{
-					id: uuid(),
-					text: action.text,
-					completed: false,
-					createdAt: moment().unix(),
-					completedAt: undefined
-				}
-				*/
-			];
-		case 'ADD_TODOS':
-			return [
 				...state,
-				...action.todos
+				action.todo
 			];
-		case 'UPDATE_TODO':
+		/*
+		case 'TOGGLE_TODO':
 			return state.map((todo) => {
 				if(todo.id === action.id) {
+					var nextCompleted = !todo.completed;
+
+					return {
+						...todo,
+						completed: nextCompleted,
+						completedAt: nextCompleted ? moment().unix() : todo.createdAt
+					}
+				} else {
+					return todo;
+				}
+			})
+		*/
+		case 'UPDATE_TODO':
+			return state.map((todo) => {
+				if(action.id === todo.id) {
 					return {
 						...todo,
 						...action.updates
@@ -51,10 +53,15 @@ export var todosReducer = (state = [], action) => {
 					return todo;
 				}
 			})
+		case 'ADD_TODOS':
+			return [
+				...state,
+				...action.todos
+			];
 		case 'CLEAR_TODOS':
 			return [];
 		default:
-			return state
+			return state;
 	}
 }
 

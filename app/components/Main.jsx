@@ -1,9 +1,9 @@
-import React from 'react';
-import * as Redux from 'react-redux';
 
-export var Main = React.createClass({
-	render: function() {
-		return(
+import React from 'react';
+
+export class Main extends React.Component {
+	render() {
+		return (
 			<div>
 				<div className='row'>
 					<div className=''>
@@ -13,6 +13,6 @@ export var Main = React.createClass({
 			</div>
 		)
 	}
-})
+}
 
-export default Redux.connect()(Main);
+export default Main;

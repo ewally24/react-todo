@@ -1,6 +1,5 @@
 import firebase from 'firebase';
 
-// Initialize Firebase
 try {
   var config = {
    apiKey: process.env.API_KEY,
@@ -11,11 +10,10 @@ try {
     messagingSenderId: process.env.MESSAGING_SENDER_ID
   };
   firebase.initializeApp(config);
- } catch(e) {
+} catch(e) {
 
- }
+}
 
-export var githubProvider = new firebase.auth.GithubAuthProvider();
-export var firebaseRef = firebase.database().ref();
-
+export const firebaseRef = firebase.database().ref();
+export const githubProvider = new firebase.auth.GithubAuthProvider();
 export default firebase;

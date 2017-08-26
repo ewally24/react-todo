@@ -1,14 +1,15 @@
 import React from 'react';
-var {Link, IndexLink} = require('react-router');
 import * as Redux from 'react-redux';
 import * as actions from 'actions';
 
 export class Login extends React.Component {
 	onLogin() {
+		// var {dispatch} = this.props;	
 		var dispatch = this.props.dispatch;
 
 		dispatch(actions.startLogin());
 	}
+
 	render() {
 		return (
 			<div>
@@ -27,6 +28,6 @@ export class Login extends React.Component {
 			</div>
 		)
 	}
-}
+} 
 
-export default Redux.connect()(Login);
+export default Redux.connect()(Login)

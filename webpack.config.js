@@ -50,7 +50,8 @@ module.exports = {
 		modulesDirectories: [
 			'node_modules',
 			'./app/components',
-			'./app/api'
+			'./app/api',
+			'./app/firebase'
 		],
 		alias: {
 			app: 'app',
